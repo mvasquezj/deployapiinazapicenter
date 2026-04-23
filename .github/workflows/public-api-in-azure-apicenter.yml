@@ -1,0 +1,71 @@
+name: Deploy API REST in Azure API Center
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  login:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Install API Center extension
+        run: az extension add --name apicenter
+
+
+      - name: Extract OpenAPI metadata
+        id: extract
+        run: |
+          TITLE=$(yq '.info.title' api-specs/openapi.yaml)
+          VERSION=$(yq '.info.version' api-specs/openapi.yaml)
+          API_ID=$(yq '.info."x-api-id"' api-specs/openapi.yaml)
+          
+          echo "title=$TITLE" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "api_id=$API_ID" >> $GITHUB_OUTPUT
+
+      - name: Create API (if not exists)
+        run: |
+          az apicenter api create \
+            --resource-group rg-articulos \
+            --service-name api-center-mv \
+            --api-id "${{ steps.extract.outputs.api_id }}" \
+            --title "${{ steps.extract.outputs.title }}" \
+            --kind rest
+
+      - name: Create API version
+        run: |
+          az apicenter api version create \
+            --resource-group rg-articulos \
+            --service-name api-center-mv \
+            --api-id "${{ steps.extract.outputs.api_id }}" \
+            --version-id "${{ steps.extract.outputs.version }}" \
+            --title "${{ steps.extract.outputs.version }}" \
+
+      - name: Upload OpenAPI spec
+        run: |
+          az apicenter api definition create \
+            --resource-group rg-articulos \
+            --service-name api-center-mv \
+            --api-id "${{ steps.extract.outputs.api_id }}" \
+            --version-id "${{ steps.extract.outputs.version }}" \
+            --definition-id openapi \
+            --format openapi \
+            --specification-file api-specs/openapi.yaml
