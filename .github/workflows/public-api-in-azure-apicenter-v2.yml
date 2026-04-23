@@ -63,13 +63,13 @@ jobs:
               --resource-group rg-articulos \
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
-              --version-id "${{ steps.extract.outputs.version }}" \
+              --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
               --title "${{ steps.extract.outputs.version }}" || \
             az apic api version create \
               --resource-group rg-articulos \
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
-              --version-id "${{ steps.extract.outputs.version }}" \
+              --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
               --title "${{ steps.extract.outputs.version }}" || \
 
             # 3. IMPORTANTE: La definición se actualiza subiendo el archivo de nuevo
@@ -78,7 +78,7 @@ jobs:
               --resource-group rg-articulos \
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
-              --version-id "${{ steps.extract.outputs.version }}" \
+              --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
               --definition-id "openapi" \
               --format "inline" \
               --specification '{"name":"openapi","version":"${{ steps.extract.outputs.openapi_version }}"}' \
