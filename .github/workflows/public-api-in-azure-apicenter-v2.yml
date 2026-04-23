@@ -81,7 +81,7 @@ jobs:
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
               --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
-              --definition-id "openapi" \
+              --definition-id "Default" \
               --format "inline" \
               --specification '{"name":"openapi","version":"${{ steps.extract.outputs.openapi_version }}"}' \
               --value "$(cat ./api-specs/openapi.yaml)"
