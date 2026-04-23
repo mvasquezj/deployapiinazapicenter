@@ -65,12 +65,14 @@ jobs:
               --api-id "${{ steps.extract.outputs.api_id }}" \
               --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
               --title "${{ steps.extract.outputs.version }}" || \
+              --lifecycle-stage "production"
             az apic api version create \
               --resource-group rg-articulos \
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
               --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
               --title "${{ steps.extract.outputs.version }}" || \
+              --lifecycle-stage "production"
 
             # 3. IMPORTANTE: La definición se actualiza subiendo el archivo de nuevo
             # El comando 'import-specification' es el ideal para actualizar el contenido del YAML
@@ -82,4 +84,4 @@ jobs:
               --definition-id "openapi" \
               --format "inline" \
               --specification '{"name":"openapi","version":"${{ steps.extract.outputs.openapi_version }}"}' \
-              --file-path "api-specs/openapi.yaml" 
+              --value "$(cat ./api-specs/openapi.yaml)"
