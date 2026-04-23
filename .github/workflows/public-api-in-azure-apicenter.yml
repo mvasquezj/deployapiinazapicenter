@@ -36,7 +36,7 @@ jobs:
           echo "api_id=$API_ID" >> $GITHUB_OUTPUT
 
       - name: Create API (if not exists)
-        uses: azure/CLI@v2
+        uses: azure/CLI@v3
         with:
           azcliversion: latest
           inlineScript: |
