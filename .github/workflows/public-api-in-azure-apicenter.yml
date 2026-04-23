@@ -43,7 +43,4 @@ jobs:
             az apic api register \
             --resource-group rg-articulos \
             --service-name api-center-mv \
-            --api-location "api-specs/openapi.yaml" \
-            --api-id "${{ steps.extract.outputs.api_id }}" \
-            --title "${{ steps.extract.outputs.title }}" \
-            --type rest
+            --api-location "api-specs/openapi.yaml" 
