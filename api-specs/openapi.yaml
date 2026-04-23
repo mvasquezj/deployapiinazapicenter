@@ -4,6 +4,7 @@ info:
   title: API de ejemplo
   license:
     name: MIT
+  x-api-id: api-ejemplo
 servers:
   - url: http://petstore.swagger.io
 paths:
