@@ -2,9 +2,8 @@ openapi: '3.1.1'
 info:
   title: API de ejemplo
   description: "## Bienvenido a la API de ejemplo\n\n### Reglas de Oro:\n- Usar HTTPS siempre.\n- Los errores 409 devuelven un `BusinessError`.\n- El código 500 es para excepciones no controladas\n- El código 423 es para bloqueo por rate limit\n\nDisfruta la documentación.\n"
-  version: '2.0'
+  version: 2.0.0
   summary: "Ejemplo simple de una API Docs\n"
-  x-api-id: api-rest-ejemplo-openapi
 servers:
   - url: https://localhost:7176/
 paths:
