@@ -64,14 +64,14 @@ jobs:
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
               --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
-              --title "${{ steps.extract.outputs.version }}" || \
-              --lifecycle-stage "production"
+              --title "${{ steps.extract.outputs.version }}" \
+              --lifecycle-stage "production" || \
             az apic api version create \
               --resource-group rg-articulos \
               --service-name api-center-mv \
               --api-id "${{ steps.extract.outputs.api_id }}" \
               --version-id $(echo "${{ steps.extract.outputs.version }}" | tr '[:upper:]' '[:lower:]' | tr '.' '-') \
-              --title "${{ steps.extract.outputs.version }}" || \
+              --title "${{ steps.extract.outputs.version }}" \
               --lifecycle-stage "production"
 
             # 3. IMPORTANTE: La definición se actualiza subiendo el archivo de nuevo
